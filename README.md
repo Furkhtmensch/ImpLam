@@ -16,7 +16,17 @@ Then run Main (./Main, for example)
 
 ## Quick note
 
-The symbol % will be used for describing the relation "is identical to".
+The symbol \ will be used in place of the symbol λ (lambda symbol).
+
+The symbol β is Beta.
+
+The symbol α is Alpha.
+
+The symbol η is Eta.
+
+The symbol ω is Omega.
+
+The symbol % will be used for describing the relation "is identical to" (modulo symbol).
 
 For example:
 
@@ -25,9 +35,7 @@ M % N
 means: "M is identical to N"
 
 Check the section for alpha equivalence, which is the relation being described here, via % (the modulo symbol).
-
 I would suggest shortly reading about what modulo in mathematics means. It has the same purpose for many different things (or types of relation, *winks*)
-
 Also, lowercase refers to variables and uppercase to terms of any kind. The following are possibilities:
 
 M % \x.x
@@ -46,7 +54,6 @@ a \%\ M
 ## Syntax of Lambda Terms for ImpLam
 
 Variables are single character, and may be followed by any number of apostrophes '.
-
 Parenthesis are as free to be used as they may be. Syntatic sugar is a thing, therefore you may write either:
 
 \x.\y.xy
@@ -94,7 +101,6 @@ You may add spaces as you like. For example:
 ## Beta and Eta Reductions
 
 Both Beta and Eta reductions are implemented.
-
 A Beta reduction is when you have a term as follows:
 
 (\x.M)N
@@ -145,7 +151,7 @@ And via Eta reduction:
 
 (particularly, here the only thing we change is (\x.Mx), where as for the previous case we changed the entire term (\x.Mx)y.
 
-Another quicknote:
+A sidenote:
 
 You may say that you're reducing a term n amount of times via the following notation:
 
@@ -160,7 +166,6 @@ M ->* M'
 ## Free Variables and Bound Variables
 
 Free Variables are variables which do not occur in an abstraction inside the term.
-
 Bound Variables are variables which occur in an abstraction inside the term.
 
 For example:
@@ -182,7 +187,6 @@ In the latter term: d, f are free variables and a, b are bound variables. c is n
 ## Alpha Equivalence and Alpha Conversion
 
 Alpha equivalence is when one term can be converted into another (those two terms will be alpha equivalent in such a case) if and only if you can accomplish that by changing the name of the bound variables (and their respective abstractions).
-
 Achieving it via M...N or N...M is the same. The direction is not important.
 
 For example:
@@ -226,9 +230,7 @@ Terms that are NOT in Normal Form (there are reductions which we can apply yet):
 ## Normal and Applicative Orders of Reduction
 
 An order of reduction is how you algorithmically choose how you reduce a term (usually, by this we mean Beta Reduce).
-
 The Normal Order of Reduction is, in practice, when you only reduce the terms after they have been applied, if such a thing is possible.
-
 More concretely, it's when you choose the leftmost, outermost application, before any other, to reduce.
 
 Check it out (Normal Order of Reduction):
@@ -269,13 +271,13 @@ In conclusion, you may want to pick Applicative Order of Reduction if you're loo
 
 ## A Suggestion regarding Non-Termination
 
-If you really want to make sure it does not terminate, try proving it via induction proof! It's the best, and will likely suit the problem at hand!
+If you really want to make sure a Lambda Term really does not terminate, try proving it via induction proof! It's the best, and will likely suit the problem at hand!
 
 ## A Couple of Somewhat Interesting Lambda Terms 
 
 By the way, the term:
 
-(\x.xx)(\x.xx)
+ω % (\x.xx)(\x.xx)
 
 Is generally known as Omega. It never changes it's form no matter how you attempt to reduce it. There's only one possible reduction anyway, so this is easy to confirm.
 
@@ -286,7 +288,6 @@ And as for:
 I have no idea if it has a known name, but it's forever expanding linearly.
 
 This type of terms is fundamental to Lambda Calculus. They are used for Y Combinators, which I will explain further in this short, compact guide. Also, you can use them to create, for example, a term which expands it's size exponentially.
-
 Here:
 
 (\x.x(xx))(\x.x(xx))
@@ -339,14 +340,50 @@ y = y
 
 And so on. It's should come as natural that the properties and rules are verified by this definition of equality of Beta Reductions in any direction, in any amount.
 
-# The following are going to be written some other time!
+# The following are going to be written some other time! Currently, they are at best incomplete.
 
 ## Church Numerals (encoding of numbers)
 
+Basically:
+0 % \fx.x
+1 % \fx.fx
+...
+n % \fx.(f^n)x % \fx.f...fx
+
+Such that for n, f is applied n times to x, one after another!
+
+Functions for addition, subtraction, successor, exponentiation, etc can be created!
+
+Lambda Calculus is Turing Complete, therefore what can be computed, will be describeable in Lambda Calculus! (as long as it's untyped, in which case it becomes total but no longer is Turing Complete; there are perks to this nonetheless).
+I might talk a little about this on a later topic.
+
+
 ## Encoding of various other structures (such as lists, booleans, pairs, etc)
+
+I will not write this extensively (as I have not done so for Church Numerals) as I'm running out of time as of the moment of writing this. Some very short examples (sorry, I need sleep):
+
+true % \xy.x
+false % \xy.y
+if % \fxy.fxy
+
 
 ## Y Combinator and Recursion
 
+I will explain this one sometime soon. In anycase, here's its definition:
+
+Y % \f.(\x.f(xx))(\x.f(xx))
+
+It's meant to receive a "function" and substitute it there. It will allow for the following equation to be fulfilled, F being any function:
+
+Y F % F (Y F)
+
+Don't forget that the spaces are redundant, this is the same as what's above:
+
+YF % FYF
+
+## Typing, Turing Completeness, Total Lambda Calculus, etc OVERVIEW ONLY
+
+Complicated and takes a while to think through how to not extend myself to far (also in order to avoid spouting nonsense).
 
 # What is to be done (very much generally speaking)
 Eta Reductions (should be quick)
