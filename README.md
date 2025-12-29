@@ -338,7 +338,7 @@ y = y
 
 ...
 
-And so on. It's should come as natural that the properties and rules are verified by this definition of equality of Beta Reductions in any direction, in any amount.
+And so on. It should come as natural that the properties and rules are verified by this definition of equality of Beta Reductions in any direction, in any amount.
 
 # The following are going to be written some other time! Currently, they are at best incomplete.
 
