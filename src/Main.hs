@@ -37,7 +37,7 @@ main = do
   putStrLn ""
   putStrLn $ show allVars
   putStrLn ""  
-  putStrLn $ unpackText $ showTermCurried result
+  putStrLn $ unpackText $ showTermSyntaxSugar result
   putStrLn ""
   putStrLn "Now, insert the second term here: "
   putStrLn ""
@@ -60,7 +60,7 @@ main = do
   putStrLn ""
   putStrLn $ show allVars
   putStrLn ""  
-  putStrLn $ unpackText $ showTermCurried result2
+  putStrLn $ unpackText $ showTermSyntaxSugar result2
   putStrLn ""
   if (showAllRedexes /= "No")
     then do
@@ -82,10 +82,13 @@ main = do
   putStrLn $ show $ isAlphaEquivalent firstRedex secondRedex
   putStrLn ""
   putStrLn "Check first term reduced as requested here: "
-  putStrLn $ unpackText $ showTermCurried firstRedex
+  putStrLn $ unpackText $ showTermSyntaxSugar firstRedex
   putStrLn ""
   putStrLn "Check second term reduced as requested here: "
-  putStrLn $ unpackText $ showTermCurried secondRedex
+  putStrLn $ unpackText $ showTermSyntaxSugar secondRedex
+  putStrLn ""
+  let eta = etaReductionSearch result
+  putStrLn $ unpackText $ showTermSyntaxSugar eta
   putStrLn ""
   putStrLn "Next iteration of the program has started: "
   putStrLn ""
@@ -97,7 +100,7 @@ reduceManyIO term 0 = return ()
 reduceManyIO term n = do
   let (termRedex, reduced) = betaReduction term NoReduction
   putStrLn ""
-  putStrLn $ unpackText $ showTermCurried termRedex
+  putStrLn $ unpackText $ showTermSyntaxSugar termRedex
   if reduced == NoReduction
     then return ()
   else if n < 0

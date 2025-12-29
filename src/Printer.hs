@@ -39,32 +39,32 @@ showTerm (Application term1 term2) =
     `T.mappend` showTerm term2
     `T.mappend` symbolBuild ")"
 
-showTermCurried :: Term -> T.Builder
-showTermCurried (Variable name index) = T.fromString name
-showTermCurried term@(Abstraction term1 term2) =
-  symbolBuild "λ" `T.mappend` getCurrying term
-showTermCurried (Application term1 term2@(Application _ _)) =
-  showTermCurried term1 `T.mappend` parensCurry term2
-showTermCurried term@(Application (Application _ _) _) = getCurrying term
-showTermCurried (Application term1 term2) =
-  parensCurry term1 `T.mappend` parensCurry term2
+showTermSyntaxSugar :: Term -> T.Builder
+showTermSyntaxSugar (Variable name index) = T.fromString name
+showTermSyntaxSugar term@(Abstraction term1 term2) =
+  symbolBuild "λ" `T.mappend` getSyntaxSugar term
+showTermSyntaxSugar (Application term1 term2@(Application _ _)) =
+  showTermSyntaxSugar term1 `T.mappend` parensSyntaxSugar term2
+showTermSyntaxSugar term@(Application (Application _ _) _) = getSyntaxSugar term
+showTermSyntaxSugar (Application term1 term2) =
+  parensSyntaxSugar term1 `T.mappend` parensSyntaxSugar term2
 
-parensCurry :: Term -> T.Builder
-parensCurry term =
+parensSyntaxSugar :: Term -> T.Builder
+parensSyntaxSugar term =
   case term of
     Abstraction _ _ ->
       symbolBuild "("
-        `T.mappend` showTermCurried term
+        `T.mappend` showTermSyntaxSugar term
         `T.mappend` symbolBuild ")"
-    _ -> showTermCurried term
+    _ -> showTermSyntaxSugar term
 
-getCurrying :: Term -> T.Builder
-getCurrying (Abstraction (Variable name _) term2@(Abstraction _ _)) =
-  T.fromString name `T.mappend` getCurrying term2
-getCurrying (Abstraction (Variable name _) term2) =
+getSyntaxSugar :: Term -> T.Builder
+getSyntaxSugar (Abstraction (Variable name _) term2@(Abstraction _ _)) =
+  T.fromString name `T.mappend` getSyntaxSugar term2
+getSyntaxSugar (Abstraction (Variable name _) term2) =
   T.fromString name
     `T.mappend` symbolBuild "."
-    `T.mappend` showTermCurried term2
-getCurrying (Application term1@(Application _ _) term2) =
-  getCurrying term1 `T.mappend` parensCurry term2
-getCurrying term@(Application _ _) = showTermCurried term
+    `T.mappend` showTermSyntaxSugar term2
+getSyntaxSugar (Application term1@(Application _ _) term2) =
+  getSyntaxSugar term1 `T.mappend` parensSyntaxSugar term2
+getSyntaxSugar term@(Application _ _) = showTermSyntaxSugar term

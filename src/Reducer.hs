@@ -217,3 +217,13 @@ reduceMultiple term n
   | n < 0     = reduceMultiple term' n
   | otherwise = reduceMultiple term' (n - 1)
   where (term', reduced) = betaReduction term NoReduction
+
+
+etaReductionSearch :: Term -> Term
+etaReductionSearch (Abstraction term1 term2) = etaReductionApply term2 term1
+etaReductionSearch term@(Application term1 term2) = Application (etaReductionSearch term1) (etaReductionSearch term2)
+etaReductionSearch term = term
+
+etaReductionApply :: Term -> Term -> Term
+etaReductionApply (Application term2 (Variable _ 1)) _ = term2
+etaReductionApply term1 term2 = Abstraction term2 term1
